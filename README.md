@@ -45,6 +45,26 @@ Integration and e2e tests create and migrate a separate `atmo_test` database (ov
 | `/admin/clients` | Clients with search, visit history and notes |
 | `/admin/settings` | Prices, options, Kaspi link/QR, working hours, days off, booking rules, texts |
 
+## Telegram bot
+
+Clients can book, pay («Я оплатил»), see and cancel their bookings in the bot; the studio gets alerts with ✅/❌ payment buttons in one admin chat. Without `NUXT_TELEGRAM_BOT_TOKEN` the site works as usual and Telegram notifications are skipped.
+
+1. Create a bot with [@BotFather](https://t.me/BotFather) and put the token in `.env` as `NUXT_TELEGRAM_BOT_TOKEN`.
+2. Set `NUXT_ADMIN_CHAT_LINK_SECRET` to any random string.
+3. Run the bot locally (long polling, no public URL needed):
+   ```bash
+   npm run bot:dev
+   ```
+4. From the chat that should receive alerts (your account or a staff group with the bot added), send `/start <NUXT_ADMIN_CHAT_LINK_SECRET>`.
+
+In production the bot runs inside the Nuxt server via webhook. Set `NUXT_TELEGRAM_WEBHOOK_SECRET` (16+ chars of `A–Z a–z 0–9 _ -`) and an https `NUXT_PUBLIC_SITE_URL`, then register it once:
+
+```bash
+npm run bot:webhook
+```
+
+Messages sent automatically: new booking / «Я оплатил» / client cancellation → admin chat; payment confirmed or rejected, hold expired, booking moved or cancelled by the studio, refund done, photos link, 24h reminder → Telegram clients.
+
 ## Admin access
 
 There is a single admin account. Create it (or change its email/password) with:

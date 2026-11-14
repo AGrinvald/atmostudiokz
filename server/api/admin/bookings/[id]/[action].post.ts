@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { getBookingDetail } from '../../../../admin/queries'
+import type { Notifier } from '../../../../bot/notifier'
 import {
   cancelByAdmin,
   confirmPayment,
@@ -9,37 +10,50 @@ import {
   rejectPayment,
   setPhotosLink,
 } from '../../../../booking/service'
-import type { Db } from '../../../../db'
+import type { Booking, Db } from '../../../../db'
 
-const ACTIONS = {
-  'confirm': (db: Db, id: number) => confirmPayment(db, id),
-  'reject': (db: Db, id: number) => rejectPayment(db, id),
-  'cancel': (db: Db, id: number, body: unknown) =>
-    cancelByAdmin(db, id, z.object({ refund: z.boolean() }).parse(body)),
-  'refunded': (db: Db, id: number) => markRefunded(db, id),
-  'move': (db: Db, id: number, body: unknown) =>
-    moveBooking(db, id, z.object({ date: z.string(), hour: z.number().int() }).parse(body)),
-  'photos': (db: Db, id: number, body: unknown) =>
-    setPhotosLink(db, id, z.object({ link: z.string() }).parse(body).link),
-  'photos-sent': (db: Db, id: number) => markPhotosSent(db, id),
-} as const
+interface ActionSpec {
+  run: (db: Db, id: number, body: unknown) => Promise<Booking>
+  /** Telegram message to the client (bot clients only), if any. */
+  notify?: (notifier: Notifier, booking: Booking) => Promise<unknown>
+}
 
-type Action = keyof typeof ACTIONS
+const ACTIONS: Record<string, ActionSpec> = {
+  'confirm': { run: (db, id) => confirmPayment(db, id), notify: (n, b) => n.paymentConfirmed(b) },
+  'reject': { run: (db, id) => rejectPayment(db, id), notify: (n, b) => n.paymentRejected(b) },
+  'cancel': {
+    run: (db, id, body) => cancelByAdmin(db, id, z.object({ refund: z.boolean() }).parse(body)),
+    notify: (n, b) => n.cancelledByStudio(b),
+  },
+  'refunded': { run: (db, id) => markRefunded(db, id), notify: (n, b) => n.refunded(b) },
+  'move': {
+    run: (db, id, body) => moveBooking(db, id, z.object({ date: z.string(), hour: z.number().int() }).parse(body)),
+    notify: (n, b) => n.bookingMoved(b),
+  },
+  // Bot clients get the link automatically (and it's marked sent); site clients get it from the admin manually.
+  'photos': {
+    run: (db, id, body) => setPhotosLink(db, id, z.object({ link: z.string() }).parse(body).link),
+    notify: (n, b) => n.photosReady(b),
+  },
+  'photos-sent': { run: (db, id) => markPhotosSent(db, id) },
+}
 
 /** Admin actions on a booking (SPEC §8). Returns the updated booking detail. */
 export default defineEventHandler(async event => {
   const id = requireIdParam(event)
-  const action = getRouterParam(event, 'action') as Action
-  if (!Object.hasOwn(ACTIONS, action)) throw createError({ statusCode: 404 })
+  const action = getRouterParam(event, 'action') ?? ''
+  const spec = Object.hasOwn(ACTIONS, action) ? ACTIONS[action]! : null
+  if (!spec) throw createError({ statusCode: 404 })
 
   const body = ['cancel', 'move', 'photos'].includes(action) ? await readBody(event) : undefined
   const db = useDb()
+  let booking: Booking
   try {
-    await handleBooking(() => ACTIONS[action](db, id, body))
+    booking = await handleBooking(() => spec.run(db, id, body))
   } catch (e) {
     if (e instanceof z.ZodError) throw createError({ statusCode: 400, data: { code: 'invalid_input' } })
     throw e
   }
-  // TODO: notify bot clients (status change, photos link) once the Telegram bot exists.
+  await spec.notify?.(useNotifier(), booking)
   return getBookingDetail(db, id)
 })

@@ -35,7 +35,7 @@ export default defineNuxtConfig({
     // Expiry also runs lazily before each booking, so a missed tick never blocks a slot.
     scheduledTasks: {
       '* * * * *': ['bookings:expire'],
-      '*/10 * * * *': ['bookings:complete'],
+      '*/10 * * * *': ['bookings:complete', 'bookings:remind'],
     },
   },
 

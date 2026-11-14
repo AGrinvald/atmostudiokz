@@ -360,6 +360,32 @@ export async function expireOverdueBookings(db: Db, now = new Date()): Promise<B
   })
 }
 
+/**
+ * Confirmed bookings of Telegram clients starting within `reminderHours` that haven't
+ * been reminded yet (SPEC §5).
+ */
+export async function listDueReminders(db: Db, now = new Date()) {
+  const { rules } = await getBookingSettings(db)
+  const rows = await db
+    .select({ booking: bookings, chatId: clients.telegramChatId })
+    .from(bookings)
+    .innerJoin(clients, eq(clients.id, bookings.clientId))
+    .where(
+      and(
+        eq(bookings.status, 'confirmed'),
+        sql`${bookings.reminderSentAt} is null`,
+        sql`${clients.telegramChatId} is not null`,
+        gt(bookings.slotStart, now),
+        lte(bookings.slotStart, new Date(now.getTime() + rules.reminderHours * SLOT_HOUR_MS)),
+      ),
+    )
+  return rows.map(r => ({ booking: r.booking, chatId: r.chatId! }))
+}
+
+export async function markReminderSent(db: Db, bookingId: number, now = new Date()): Promise<void> {
+  await db.update(bookings).set({ reminderSentAt: now }).where(eq(bookings.id, bookingId))
+}
+
 /** Marks confirmed bookings whose hour has ended as completed. */
 export async function completePastBookings(db: Db, now = new Date()): Promise<Booking[]> {
   return db.transaction(async tx => {
