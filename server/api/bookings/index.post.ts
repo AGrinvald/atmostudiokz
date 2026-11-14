@@ -11,6 +11,7 @@ const siteBookingSchema = createBookingInputSchema.extend({
 })
 
 export default defineEventHandler(async event => {
+  rateLimit(event, { key: 'create-booking', limit: 10, windowMs: 10 * 60_000 })
   const body = await readValidatedBody(event, siteBookingSchema.parse)
   const db = useDb()
   const booking = await handleBooking(() => createBooking(db, body, { source: 'site' }))

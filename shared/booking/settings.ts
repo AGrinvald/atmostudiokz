@@ -39,7 +39,14 @@ export const rulesSettingsSchema = z.object({
 // SPEC §4.2 — booking is blocked until a Kaspi link is configured
 export const paymentSettingsSchema = z.object({
   kaspiLink: z.url().nullable(),
-  kaspiQrUrl: z.string().nullable(),
+  // An image URL or a data: URL uploaded from the admin panel (~300 KB max)
+  kaspiQrUrl: z.string().max(400_000).nullable(),
+})
+
+// SPEC §6.1 — «Правила студии» and «Политика конфиденциальности», plain text
+export const legalSettingsSchema = z.object({
+  rules: z.string().max(50_000),
+  privacy: z.string().max(50_000),
 })
 
 export const bookingSettingsSchema = z.object({
@@ -47,12 +54,14 @@ export const bookingSettingsSchema = z.object({
   options: optionsSettingsSchema,
   rules: rulesSettingsSchema,
   payment: paymentSettingsSchema,
+  legal: legalSettingsSchema,
 })
 
 export type PricingSettings = z.infer<typeof pricingSettingsSchema>
 export type OptionsSettings = z.infer<typeof optionsSettingsSchema>
 export type RulesSettings = z.infer<typeof rulesSettingsSchema>
 export type PaymentSettings = z.infer<typeof paymentSettingsSchema>
+export type LegalSettings = z.infer<typeof legalSettingsSchema>
 export type BookingSettings = z.infer<typeof bookingSettingsSchema>
 export type BookingSettingsKey = keyof BookingSettings
 
@@ -77,5 +86,9 @@ export const DEFAULT_BOOKING_SETTINGS: BookingSettings = {
   payment: {
     kaspiLink: null,
     kaspiQrUrl: null,
+  },
+  legal: {
+    rules: '',
+    privacy: '',
   },
 }

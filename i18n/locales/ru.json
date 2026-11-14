@@ -168,5 +168,221 @@
     "rulesTitle": "Правила студии",
     "privacyTitle": "Политика конфиденциальности",
     "placeholder": "Текст скоро появится. По вопросам звоните: {phone}."
+  },
+  "admin": {
+    "title": "Админ-панель",
+    "nav": {
+      "bookings": "Записи",
+      "clients": "Клиенты",
+      "settings": "Настройки",
+      "logout": "Выйти",
+      "site": "Сайт"
+    },
+    "login": {
+      "title": "Вход в админ-панель",
+      "email": "Email",
+      "password": "Пароль",
+      "submit": "Войти",
+      "invalid": "Неверный email или пароль",
+      "rateLimited": "Слишком много попыток. Попробуйте через 15 минут."
+    },
+    "status": {
+      "awaiting_payment": "Ждёт оплаты",
+      "payment_claimed": "Проверить оплату",
+      "confirmed": "Подтверждена",
+      "expired": "Истекла",
+      "rejected": "Оплата не найдена",
+      "cancelled": "Отменена",
+      "cancelled_refund_pending": "К возврату",
+      "refunded": "Возвращена",
+      "completed": "Состоялась"
+    },
+    "source": {
+      "site": "Сайт",
+      "bot": "Telegram",
+      "admin": "Админ"
+    },
+    "paymentMethod": {
+      "kaspi": "Kaspi",
+      "cash": "Наличные",
+      "on_site": "Оплата на месте"
+    },
+    "event": {
+      "created": "Создана",
+      "payment_claimed": "Клиент нажал «Я оплатил»",
+      "payment_confirmed": "Оплата подтверждена",
+      "payment_rejected": "Оплата отклонена",
+      "expired": "Время на оплату истекло",
+      "cancelled": "Отменена",
+      "refunded": "Возврат выполнен",
+      "moved": "Перенесена",
+      "completed": "Сессия состоялась",
+      "photos_link_set": "Добавлена ссылка на фото",
+      "photos_sent": "Фото отправлены"
+    },
+    "actor": {
+      "client": "клиент",
+      "admin": "админ",
+      "system": "система"
+    },
+    "bookings": {
+      "title": "Записи",
+      "new": "Новая запись",
+      "today": "Сегодня",
+      "prevDay": "Предыдущий день",
+      "nextDay": "Следующий день",
+      "attention": "Требуют внимания",
+      "empty": "На этот день записей нет",
+      "showInactive": "Показать отменённые и истёкшие",
+      "confirm": "✅ Оплата получена",
+      "reject": "❌ Оплаты нет",
+      "refunded": "Возврат выполнен",
+      "people": "{n} чел."
+    },
+    "booking": {
+      "back": "← Записи",
+      "details": "Детали",
+      "client": "Клиент",
+      "when": "Дата и время",
+      "session": "Сессия",
+      "options": "Свет и фон",
+      "people": "Человек",
+      "price": "Сумма",
+      "priceOverride": "изменена вручную, расчёт {amount}",
+      "source": "Источник",
+      "paymentMethod": "Оплата",
+      "comment": "Комментарий",
+      "created": "Создана",
+      "paymentDeadline": "Оплатить до",
+      "telegram": "Telegram",
+      "yes": "да",
+      "no": "нет",
+      "openClient": "Карточка клиента",
+      "actions": "Действия",
+      "cancelWithRefund": "Отменить с возвратом",
+      "cancelNoRefund": "Отменить без возврата",
+      "confirmCancel": "Отменить запись {number}?",
+      "refundHint": "Верните {amount} в Kaspi, затем отметьте возврат.",
+      "move": "Перенести",
+      "moveTo": "Перенести на",
+      "moveSubmit": "Перенести",
+      "hour": "Час",
+      "photos": "Фото",
+      "photosLink": "Ссылка на облако",
+      "photosSave": "Сохранить ссылку",
+      "photosCopy": "Копировать",
+      "photosCopied": "Скопировано",
+      "photosWhatsApp": "Открыть WhatsApp",
+      "photosMarkSent": "Отметить отправленным",
+      "photosSent": "Отправлено {time}",
+      "photosBotNote": "Клиенту в Telegram ссылка уйдёт автоматически, когда подключим бота.",
+      "photosWhatsAppText": "Здравствуйте, {name}! Ваши фото из ATMO studio: {link}",
+      "history": "История"
+    },
+    "newBooking": {
+      "title": "Новая запись",
+      "hint": "Запись сразу подтверждается. Можно выбрать любое свободное время.",
+      "date": "Дата",
+      "hour": "Время",
+      "busy": "занято",
+      "paymentMethod": "Способ оплаты",
+      "price": "Сумма",
+      "priceOverride": "Своя сумма (необязательно)",
+      "submit": "Создать запись"
+    },
+    "clients": {
+      "title": "Клиенты",
+      "search": "Поиск по имени или телефону",
+      "empty": "Клиентов не найдено",
+      "name": "Имя",
+      "phone": "Телефон",
+      "visits": "Визитов",
+      "lastVisit": "Последний визит",
+      "nextVisit": "Следующий",
+      "back": "← Клиенты",
+      "notes": "Заметки",
+      "notesPlaceholder": "Видны только администратору",
+      "save": "Сохранить",
+      "saved": "Сохранено",
+      "bookings": "Записи клиента",
+      "noBookings": "Записей нет"
+    },
+    "settings": {
+      "title": "Настройки",
+      "save": "Сохранить",
+      "saved": "Сохранено",
+      "pricing": {
+        "title": "Цены",
+        "base30": "30 минут, ₸",
+        "base55": "55 минут, ₸",
+        "includedPeople": "Человек без доплаты",
+        "extraPersonPrice": "Доплата за человека, ₸",
+        "maxPeople": "Максимум человек"
+      },
+      "options": {
+        "title": "Свет и фон",
+        "hint": "Выключенные варианты на сайте показываются как «скоро»."
+      },
+      "rules": {
+        "title": "Правила записи",
+        "minLeadHours": "Запись не позднее чем за, ч",
+        "horizonDays": "Запись вперёд на, дней",
+        "paymentWindowMinutes": "Время на оплату, мин",
+        "cancelCutoffHours": "Отмена клиентом не позднее чем за, ч",
+        "reminderHours": "Напоминание в Telegram за, ч"
+      },
+      "payment": {
+        "title": "Kaspi",
+        "link": "Ссылка на оплату",
+        "qr": "QR-код",
+        "upload": "Загрузить QR",
+        "remove": "Удалить QR",
+        "tooLarge": "Файл слишком большой (максимум 300 КБ)",
+        "unavailable": "Пока ссылка не указана, онлайн-запись недоступна."
+      },
+      "weekly": {
+        "title": "Рабочие часы",
+        "open": "Работаем",
+        "from": "Первая запись",
+        "to": "Последняя запись"
+      },
+      "exceptions": {
+        "title": "Выходные и блокировки",
+        "empty": "Нет запланированных исключений",
+        "date": "Дата",
+        "allDay": "Весь день",
+        "hours": "Часы",
+        "note": "Заметка",
+        "add": "Добавить",
+        "delete": "Удалить",
+        "closed": "закрыто"
+      },
+      "legal": {
+        "title": "Тексты",
+        "rules": "Правила студии",
+        "privacy": "Политика конфиденциальности"
+      }
+    },
+    "weekday": [
+      "Пн",
+      "Вт",
+      "Ср",
+      "Чт",
+      "Пт",
+      "Сб",
+      "Вс"
+    ],
+    "errors": {
+      "invalid_input": "Проверьте введённые данные",
+      "invalid_phone": "Проверьте номер телефона",
+      "option_unavailable": "Этот вариант выключен в настройках",
+      "invalid_people_count": "Недопустимое количество человек",
+      "slot_taken": "Это время уже занято",
+      "slot_unavailable": "Это время недоступно",
+      "invalid_transition": "Статус записи изменился — обновите страницу",
+      "not_found": "Не найдено",
+      "rate_limited": "Слишком много запросов, подождите",
+      "generic": "Не получилось. Попробуйте ещё раз."
+    }
   }
 }

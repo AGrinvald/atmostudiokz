@@ -19,7 +19,8 @@
     "test": "vitest run",
     "test:unit": "vitest run --project unit",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "admin:set": "tsx --env-file=.env scripts/set-admin.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.1",

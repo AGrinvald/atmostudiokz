@@ -2,34 +2,13 @@ import { expect, test, type Page } from '@playwright/test'
 import { DEFAULT_BOOKING_SETTINGS } from '../../shared/booking/settings'
 import { createBooking } from '../../server/booking/service'
 import { setBookingSetting } from '../../server/booking/settings'
-import { addDays, toStudioParts } from '../../server/booking/time'
-import { scheduleWeekly } from '../../server/db/schema'
-import { createTestDb } from '../integration/db'
+import { FUTURE_DATE, open, resetDatabase, testDb } from './helpers'
 
-const { db, close, reset } = createTestDb()
-
-// A date far enough ahead that the 72h cancel cutoff doesn't apply.
-const DATE = addDays(toStudioParts(new Date()).date, 5)
+const { db } = testDb
+const DATE = FUTURE_DATE
 const HOUR = 14
 
-test.beforeEach(async () => {
-  await reset()
-  await db.insert(scheduleWeekly).values(
-    Array.from({ length: 7 }, (_, weekday) => ({ weekday, isOpen: true, firstSlotHour: 10, lastSlotHour: 21 })),
-  )
-  await setBookingSetting(db, 'payment', { kaspiLink: 'https://kaspi.kz/pay/test', kaspiQrUrl: null })
-})
-
-test.afterAll(() => close())
-
-/** Navigates and waits until Vue has hydrated, so clicks reach the form state. */
-async function open(page: Page, path: string) {
-  await page.goto(path)
-  await page.waitForFunction(() => {
-    const app = (document.querySelector('#__nuxt') as any)?.__vue_app__
-    return app?.$nuxt && !app.$nuxt.isHydrating
-  })
-}
+test.beforeEach(() => resetDatabase())
 
 const option = (page: Page, name: string, value: string | number) =>
   page.locator(`label:has(input[name="${name}"][value="${value}"])`)
