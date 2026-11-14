@@ -35,6 +35,34 @@ export function formatStudioTime(iso: string): string {
   )
 }
 
+/** A UTC instant as `20 нояб., 14:35` in studio time. */
+export function formatStudioDateTime(iso: string | Date): string {
+  return new Intl.DateTimeFormat('ru-RU', {
+    timeZone: STUDIO_TZ,
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(iso))
+}
+
+/** `+77776090317` → `+7 777 609 03 17` */
+export function formatPhone(e164: string): string {
+  const m = /^\+7(\d{3})(\d{3})(\d{2})(\d{2})$/.exec(e164)
+  return m ? `+7 ${m[1]} ${m[2]} ${m[3]} ${m[4]}` : e164
+}
+
+/** Today's date in studio time, `YYYY-MM-DD`. */
+export function studioToday(): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: STUDIO_TZ }).format(new Date())
+}
+
+/** Adds days to a `YYYY-MM-DD` date. */
+export function shiftDate(isoDate: string, days: number): string {
+  const [y, m, d] = isoDate.split('-').map(Number) as [number, number, number]
+  return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10)
+}
+
 /** Live mask for the phone field: `+7 (777) 609-03-17`. */
 export function formatPhoneInput(value: string): string {
   let digits = value.replace(/\D/g, '')

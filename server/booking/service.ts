@@ -317,6 +317,36 @@ export async function moveBooking(
   }
 }
 
+/** Admin attaches the cloud link with the photos (SPEC §4.5). Re-attaching replaces the link. */
+export async function setPhotosLink(db: Db, bookingId: number, link: string, now = new Date()): Promise<Booking> {
+  const parsed = z.url({ protocol: /^https?$/ }).max(2000).safeParse(link.trim())
+  if (!parsed.success) throw new BookingError('invalid_input', 'Invalid photos link')
+  const booking = await requireBooking(findBookingById(db, bookingId))
+  return transitionOrThrow(db, booking, {
+    from: ['confirmed', 'completed'],
+    set: { status: booking.status, photosLink: parsed.data, photosSentAt: null },
+    event: { type: 'photos_link_set', actor: 'admin', payload: { link: parsed.data } },
+    now,
+  })
+}
+
+/** Records that the photos link reached the client (sent by the bot, or manually by the admin). */
+export async function markPhotosSent(
+  db: Db,
+  bookingId: number,
+  opts: { actor: Actor } = { actor: 'admin' },
+  now = new Date(),
+): Promise<Booking> {
+  const booking = await requireBooking(findBookingById(db, bookingId))
+  if (!booking.photosLink) throw new BookingError('invalid_transition', 'No photos link to send')
+  return transitionOrThrow(db, booking, {
+    from: ['confirmed', 'completed'],
+    set: { status: booking.status, photosSentAt: now },
+    event: { type: 'photos_sent', actor: opts.actor },
+    now,
+  })
+}
+
 /** Expires holds whose payment deadline passed without «Я оплатил». Returns expired bookings. */
 export async function expireOverdueBookings(db: Db, now = new Date()): Promise<Booking[]> {
   return db.transaction(async tx => {

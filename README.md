@@ -40,7 +40,20 @@ Integration and e2e tests create and migrate a separate `atmo_test` database (ov
 | `/` | Landing page |
 | `/book` | Booking form: date, hour, session, light, background, people (live total), contacts, consents |
 | `/booking/:token` | Booking status: Kaspi payment steps with countdown, «Я оплатил», cancel (≥ 72h) |
-| `/rules`, `/privacy` | Placeholders until the texts are editable in the admin panel |
+| `/rules`, `/privacy` | Studio rules and privacy policy (texts edited in the admin panel) |
+| `/admin` | Admin panel: bookings by day, «Требуют внимания», booking actions |
+| `/admin/clients` | Clients with search, visit history and notes |
+| `/admin/settings` | Prices, options, Kaspi link/QR, working hours, days off, booking rules, texts |
+
+## Admin access
+
+There is a single admin account. Create it (or change its email/password) with:
+
+```bash
+npm run admin:set -- --email owner@example.com --password "at least 10 characters"
+```
+
+Then sign in at http://localhost:3000/admin. Five wrong passwords lock login for 15 minutes per IP.
 
 ## Booking core
 
