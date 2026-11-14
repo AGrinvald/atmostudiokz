@@ -18,9 +18,11 @@
     "db:seed": "tsx --env-file=.env scripts/seed.ts",
     "test": "vitest run",
     "test:unit": "vitest run --project unit",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@types/node": "^24.19.2",
     "drizzle-kit": "^0.31.11",
     "tsx": "^4.23.15",

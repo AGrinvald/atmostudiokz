@@ -17,6 +17,10 @@
     background-color: #ffffff;
     color: var(--color-ink-900);
   }
+  /* Fieldsets default to min-width: min-content, which lets scrollable rows widen the page. */
+  fieldset {
+    min-width: 0;
+  }
 }
 
 @layer components {
@@ -28,5 +32,8 @@
   }
   .btn-secondary {
     @apply bg-ink-900 text-white hover:bg-ink-700;
+  }
+  .field {
+    @apply w-full rounded-xl border-2 border-ink-900/10 bg-white px-4 py-3 text-base outline-none transition-colors placeholder:text-ink-900/35 focus:border-ink-900;
   }
 }
