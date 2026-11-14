@@ -132,6 +132,13 @@ export const settings = pgTable('settings', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
+// Telegram booking draft per chat, from the contact step on (earlier steps live in callback data).
+export const botSessions = pgTable('bot_sessions', {
+  chatId: bigint('chat_id', { mode: 'number' }).primaryKey(),
+  state: jsonb('state').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+})
+
 export const bookingEvents = pgTable('booking_events', {
   id: serial('id').primaryKey(),
   bookingId: integer('booking_id').notNull().references(() => bookings.id),

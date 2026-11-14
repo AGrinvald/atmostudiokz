@@ -275,7 +275,7 @@
       "photosWhatsApp": "Открыть WhatsApp",
       "photosMarkSent": "Отметить отправленным",
       "photosSent": "Отправлено {time}",
-      "photosBotNote": "Клиенту в Telegram ссылка уйдёт автоматически, когда подключим бота.",
+      "photosBotNote": "Клиент записан через Telegram — ссылка уходит ему в бот автоматически при сохранении.",
       "photosWhatsAppText": "Здравствуйте, {name}! Ваши фото из ATMO studio: {link}",
       "history": "История"
     },

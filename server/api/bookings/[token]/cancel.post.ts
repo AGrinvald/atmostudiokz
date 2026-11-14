@@ -6,5 +6,6 @@ import { getBookingSettings } from '../../../booking/settings'
 export default defineEventHandler(async event => {
   const db = useDb()
   const booking = await handleBooking(() => cancelByClient(db, requireToken(event)))
+  await useNotifier().clientCancelled(booking)
   return toPublicBooking(booking, await getBookingSettings(db))
 })

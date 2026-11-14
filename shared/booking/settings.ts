@@ -49,12 +49,18 @@ export const legalSettingsSchema = z.object({
   privacy: z.string().max(50_000),
 })
 
+// SPEC §5 — the chat that receives admin alerts, linked with `/start <secret>`
+export const telegramSettingsSchema = z.object({
+  adminChatId: z.number().int().nullable(),
+})
+
 export const bookingSettingsSchema = z.object({
   pricing: pricingSettingsSchema,
   options: optionsSettingsSchema,
   rules: rulesSettingsSchema,
   payment: paymentSettingsSchema,
   legal: legalSettingsSchema,
+  telegram: telegramSettingsSchema,
 })
 
 export type PricingSettings = z.infer<typeof pricingSettingsSchema>
@@ -90,5 +96,8 @@ export const DEFAULT_BOOKING_SETTINGS: BookingSettings = {
   legal: {
     rules: '',
     privacy: '',
+  },
+  telegram: {
+    adminChatId: null,
   },
 }

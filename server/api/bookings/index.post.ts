@@ -15,6 +15,7 @@ export default defineEventHandler(async event => {
   const body = await readValidatedBody(event, siteBookingSchema.parse)
   const db = useDb()
   const booking = await handleBooking(() => createBooking(db, body, { source: 'site' }))
+  await useNotifier().bookingCreated(booking)
   setResponseStatus(event, 201)
   return toPublicBooking(booking, await getBookingSettings(db))
 })
