@@ -30,6 +30,15 @@ export default defineNuxtConfig({
     locales: [{ code: 'ru', language: 'ru-RU', name: 'Русский', file: 'ru.json' }],
   },
 
+  nitro: {
+    experimental: { tasks: true },
+    // Expiry also runs lazily before each booking, so a missed tick never blocks a slot.
+    scheduledTasks: {
+      '* * * * *': ['bookings:expire'],
+      '*/10 * * * *': ['bookings:complete'],
+    },
+  },
+
   // DATABASE_URL is read directly from process.env (shared with drizzle-kit).
   runtimeConfig: {
     telegramBotToken: '',

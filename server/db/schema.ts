@@ -6,6 +6,7 @@ import {
   integer,
   jsonb,
   pgEnum,
+  pgSequence,
   pgTable,
   serial,
   smallint,
@@ -58,6 +59,9 @@ export const clients = pgTable('clients', {
   notes: text('notes'),
   ...timestamps,
 })
+
+// Source of the human-readable booking number: A-1001, A-1002, …
+export const bookingNumberSeq = pgSequence('booking_number_seq', { startWith: 1001 })
 
 export const bookings = pgTable(
   'bookings',
