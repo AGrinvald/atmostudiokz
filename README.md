@@ -9,6 +9,8 @@ Nuxt 4 · Tailwind CSS 4 · PostgreSQL + Drizzle ORM · grammY (Telegram) · nux
 
 ## Local development
 
+Step-by-step guide with troubleshooting: **[docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md)**.
+
 Requirements: Node 24 (see `.nvmrc`), Docker.
 
 ```bash
