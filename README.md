@@ -28,9 +28,19 @@ Health check: `GET /api/health`.
 ```bash
 npm test             # unit + integration (needs `npm run db:up`)
 npm run test:unit    # pure logic only, no database
+npm run test:e2e     # browser tests (Playwright, mobile + desktop)
 ```
 
-Integration tests create and migrate a separate `atmo_test` database (override with `TEST_DATABASE_URL`).
+Integration and e2e tests create and migrate a separate `atmo_test` database (override with `TEST_DATABASE_URL`), so your dev data is never touched. E2E tests start their own dev server on port 3100. First run only: `npx playwright install chromium`.
+
+## Pages
+
+| Page | Purpose |
+|---|---|
+| `/` | Landing page |
+| `/book` | Booking form: date, hour, session, light, background, people (live total), contacts, consents |
+| `/booking/:token` | Booking status: Kaspi payment steps with countdown, «Я оплатил», cancel (≥ 72h) |
+| `/rules`, `/privacy` | Placeholders until the texts are editable in the admin panel |
 
 ## Booking core
 
