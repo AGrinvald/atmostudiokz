@@ -1,14 +1,12 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
-import * as schema from '../db/schema'
+import { createDb, type Db } from '../db'
 
-let instance: ReturnType<typeof drizzle<typeof schema>> | undefined
+let instance: Db | undefined
 
-export function useDb() {
+export function useDb(): Db {
   if (!instance) {
     const url = process.env.DATABASE_URL
     if (!url) throw new Error('DATABASE_URL is not set')
-    instance = drizzle(postgres(url), { schema })
+    instance = createDb(url).db
   }
   return instance
 }
