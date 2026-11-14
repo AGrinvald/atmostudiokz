@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* Brand palette sampled from references/colors.jpg */
+@theme {
+  --color-ink-900: #151515;
+  --color-ink-800: #202020;
+  --color-ink-700: #2b2b2b;
+  --color-sun: #f8d146;
+  --color-sun-light: #fbed5c;
+  --color-paper: #f2f2f2;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: #ffffff;
+    color: var(--color-ink-900);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-sun text-ink-900 hover:bg-sun-light;
+  }
+  .btn-secondary {
+    @apply bg-ink-900 text-white hover:bg-ink-700;
+  }
+}
